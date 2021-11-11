@@ -56,11 +56,23 @@ TEST(integral_image, check_single_channel_integral_image_calculating)
     ASSERT_EQ(10, result.at(3).at(0)); // check the last element which contain summ of all elements
 }
 
-TEST(integral_image, check_thiple_channels_integral_image_calculating)
+TEST(integral_image, check_triple_channels_integral_image_calculating)
 {
     uint8_t redArr[1][4] = { {1, 2, 3, 4} };
     uint8_t greenArr[1][4] = { {5, 6, 7, 8} };
     uint8_t blueArr[1][4] = { {9, 10, 11, 12} };
+    std::vector<cv::Mat> channels;
+    channels.push_back(cv::Mat(1, 4, CV_8U, &redArr));
+    channels.push_back(cv::Mat(1, 4, CV_8U, &greenArr));
+    channels.push_back(cv::Mat(1, 4, CV_8U, &blueArr));
+    cv::Mat combined;
+    cv::merge(channels, combined);
+    cv::Mat copy;
+    combined.copyTo(copy);
+    auto result = getIntegralImage(std::move(copy));
+    ASSERT_EQ(10, result[0][0][3]);
+    ASSERT_EQ(26, result[1][0][3]);
+    ASSERT_EQ(42, result[2][0][3]);
 }
 
 #ifdef TESTING
