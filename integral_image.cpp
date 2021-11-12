@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
-#include <experimental/filesystem>
 #include <fstream>
 #include <stdexcept>
 #include <unistd.h>
@@ -111,7 +110,7 @@ void processImage(std::string &name)
 {
     try
     {
-        if (std::experimental::filesystem::exists(name))
+        if (std::filesystem::exists(name))
         {
             ///< Если есть возможность создать новый поток - создаем, иначе исполняем функцию в главном потоке
             if (threadCounter.createNewThread())
